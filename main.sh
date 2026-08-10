@@ -13,7 +13,7 @@ ROOT_FOLDER_NAME="Fedora_backup_test" # Root folder for backups on removable dri
 
 getConnectedDevices() {
     while read -r line; do
-        eval "$line"
+        eval "$line" # Security issue!
 
         [[ "$RM" == "0" ]] && continue
         [[ -z "$MOUNTPOINTS" ]] && continue
