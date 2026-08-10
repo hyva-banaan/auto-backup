@@ -10,7 +10,7 @@ BACKUP_DRIVE="" # Backup medium name
 CURRENT_DATE=$(date +%F) # 2026-08-05 , this means August 5th
 
 ROOT_FOLDER_NAME="Fedora_backup_test" # Root folder for backups on removable drive
-
+# A
 getConnectedDevices() {
     while read -r line; do
         eval "$line" # Security issue!
