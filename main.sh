@@ -1,20 +1,15 @@
 #!/bin/bash
 
-# Backup Location
-
-# - Drive
-# -- Fedora
-
 declare -A devices_hash # Connected removable lsblk devices and their description pairs.
-devices=() # Indexed and filtered block devices.
+devices=() # Indexed and filtered block devices. Suitable for backup (removable, is mounted).
 
-BACKUP_FROM=("$HOME/Pictures" "$HOME/Documents" "$HOME/Projects" "$HOME/Music")
-MOUNT_POINT=""
+BACKUP_FROM=("$HOME/Pictures" "$HOME/Documents" "$HOME/Projects" "$HOME/Music") # NO TRAILING '/' !!!
+MOUNT_POINT="" # Mount point of backup medium
 
-BACKUP_DRIVE=""
-CURRENT_DATE=$(date +%F)
+BACKUP_DRIVE="" # Backup medium name
+CURRENT_DATE=$(date +%F) # 2026-08-05 , this means August 5th
 
-ROOT_FOLDER_NAME="Fedora_backup_test"
+ROOT_FOLDER_NAME="Fedora_backup_test" # Root folder for backups on removable drive
 
 getConnectedDevices() {
     while read -r line; do
@@ -58,7 +53,12 @@ copyAndCompress() {
 
 	for location in "${BACKUP_FROM[@]}"; do
 		
+		# To get 'Pictures' from /home/km/Pictures, split by '/'
 		IFS='/' read -a array <<< "$location"
+
+		# Make a dir, create parent directories
+		# Tar compress, tar.xz, verbose, target file, exclusions, from where
+		# Array[-1] is 'Pictures' from /home/km/Pictures
 
 		mkdir -p "$MOUNT_POINT/$ROOT_FOLDER_NAME/${array[-1]}/"
 		tar -cJvf "$MOUNT_POINT/$ROOT_FOLDER_NAME/${array[-1]}/$CURRENT_DATE.tar.xz" \
